@@ -1,0 +1,176 @@
+/* Pointage — le ruban de calculatrice agrafé à la facture.
+   Sous-main vert bouteille, papier thermique blanc froid, encre noire ; le rouge du ruban bicolore
+   ne marque QUE les écarts (et un écart est aussi barré et pointé ◄ : lisible sans la couleur). */
+
+:root {
+  --sous-main: #1d3a2e;
+  --sous-main-fonce: #142a21;
+  --sous-main-clair: #2a5040;
+  --sur-vert: #e6eee8;
+  --sur-vert-doux: #b9cbbf;
+  --papier: #fbfcfa;
+  --papier-ombre: #e9edea;
+  --encre: #161816;
+  --encre-pale: #535b56;
+  --filet: #cfd6d1;
+  --rouge: #b8111e;
+  --surligneur: rgb(255 214 10 / 0.38);
+
+  --f-chiffres: 'Azeret Mono', ui-monospace, monospace;
+  --f-texte: 'Public Sans', system-ui, sans-serif;
+  --r: 4px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scrollbar-color: var(--sous-main-clair) var(--sous-main-fonce); }
+body {
+  margin: 0; min-height: 100dvh; display: flex; flex-direction: column;
+  background: var(--sous-main); color: var(--sur-vert);
+  font-family: var(--f-texte); font-size: 1rem; line-height: 1.5;
+}
+::selection { background: var(--surligneur); color: var(--encre); }
+:focus-visible { outline: 3px solid #ffd60a; outline-offset: 2px; }
+button, input { font: inherit; color: inherit; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+[hidden] { display: none !important; }
+.cadre { width: min(100% - 2rem, 1400px); margin-inline: auto; }
+a { color: inherit; text-underline-offset: 0.2em; }
+
+/* ---------------------------------------------------------------- boutons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 48px; padding-inline: 1.1rem;
+  border-radius: var(--r); border: 2px solid transparent; font-weight: 700; cursor: pointer; text-decoration: none;
+  transition: transform 160ms var(--ease), background 160ms var(--ease), color 160ms var(--ease);
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.6; cursor: progress; }
+.btn-papier { background: var(--papier); color: var(--encre); box-shadow: 0 2px 0 var(--sous-main-fonce), 0 6px 14px rgb(0 0 0 / 0.25); }
+.btn-papier:hover { background: #fff; }
+.btn-trait { background: transparent; color: var(--sur-vert); border-color: var(--sur-vert-doux); }
+.btn-trait:hover { background: var(--sous-main-clair); }
+.btn-rouge { background: var(--papier); color: var(--encre); width: 100%; margin-block-start: 1rem; box-shadow: 0 2px 0 var(--sous-main-fonce), 0 6px 14px rgb(0 0 0 / 0.25); }
+.btn-rouge:hover { background: #fff; }
+
+/* ---------------------------------------------------------------- bandeau */
+.bandeau { border-block-end: 1px solid var(--sous-main-clair); background: var(--sous-main-fonce); }
+.bandeau-cadre { display: grid; gap: 1rem; padding-block: 1.2rem 1.4rem; }
+@media (min-width: 960px) { .bandeau-cadre { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 2.5rem; } }
+.marque { margin: 0; display: grid; line-height: 1; }
+.marque-nom { font-family: var(--f-chiffres); font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em; color: var(--papier); }
+.marque-nom::before { content: '✓ '; color: var(--sur-vert-doux); }
+.marque-sous { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--sur-vert-doux); margin-block-start: 0.35rem; }
+.promesse h1 { margin: 0; font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem); font-weight: 800; line-height: 1.2; color: var(--papier); text-wrap: balance; }
+.promesse p { margin: 0.35rem 0 0; max-width: 70ch; color: var(--sur-vert); font-size: 0.95rem; }
+.promesse strong { color: var(--papier); }
+.actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+/* ---------------------------------------------------------------- le plan de travail */
+.sous-main { flex: 1; padding-block: 1.5rem 3rem; position: relative; }
+.plan { display: grid; gap: 1.75rem; align-items: start; grid-template-columns: minmax(0, 1fr); }
+.plan > * { min-width: 0; } /* un élément de grille prend sinon la largeur de son contenu */
+@media (min-width: 960px) {
+  .plan { grid-template-columns: minmax(15rem, 18rem) minmax(0, 25rem) minmax(0, 1fr); gap: 2rem; }
+  .pile, .document { position: sticky; top: 1rem; }
+}
+h2 { margin: 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: var(--sur-vert-doux); }
+.pile-tete, .document-tete { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; margin-block-end: 0.75rem; flex-wrap: wrap; }
+.lien-vider { border: 0; background: none; padding: 0; min-height: 44px; color: var(--sur-vert-doux); font-size: 0.85rem; text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; }
+.lien-vider:hover { color: var(--papier); }
+.bilan { margin: 0; font-family: var(--f-chiffres); font-size: 0.85rem; color: var(--papier); }
+.vide { color: var(--sur-vert); font-size: 0.95rem; margin: 0; padding: 1rem; border: 1px dashed var(--sur-vert-doux); border-radius: var(--r); }
+.aide { margin: 0; font-size: 0.85rem; color: var(--sur-vert-doux); }
+
+/* ---------------------------------------------------------------- la pile des tickets */
+.tickets { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+@media (max-width: 959px) {
+  .tickets { grid-auto-flow: column; grid-auto-columns: minmax(13.5rem, 72%); overflow-x: auto; overscroll-behavior-x: contain; padding-block-end: 0.5rem; scroll-snap-type: x mandatory; }
+  .tickets li { scroll-snap-align: start; }
+}
+.ticket {
+  width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.1rem 0.75rem; text-align: start;
+  padding: 0.65rem 0.8rem; border: 0; border-radius: 2px; cursor: pointer;
+  background: var(--papier); color: var(--encre); box-shadow: 0 1px 0 var(--papier-ombre), 0 4px 10px rgb(0 0 0 / 0.22);
+  transition: transform 200ms var(--ease), box-shadow 200ms var(--ease);
+}
+.ticket:hover { transform: translateX(3px); }
+.ticket.actif { transform: translateX(8px); box-shadow: -6px 0 0 var(--sur-vert-doux), 0 8px 18px rgb(0 0 0 / 0.3); }
+@media (max-width: 959px) { .ticket:hover { transform: none; } .ticket.actif { transform: translateY(-3px); box-shadow: 0 -4px 0 var(--sur-vert-doux), 0 8px 18px rgb(0 0 0 / 0.3); } }
+.ticket-nom { font-weight: 700; font-size: 0.92rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ticket-num { grid-column: 1; font-family: var(--f-chiffres); font-size: 0.75rem; color: var(--encre-pale); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ticket-total { grid-column: 2; grid-row: 1; font-family: var(--f-chiffres); font-size: 0.85rem; text-align: end; white-space: nowrap; }
+.ticket-etat { grid-column: 2; grid-row: 2; font-family: var(--f-chiffres); font-size: 0.72rem; font-weight: 700; text-align: end; text-transform: uppercase; white-space: nowrap; }
+.ticket-etat.pointe { color: var(--encre); }
+.ticket-etat.pointe::before { content: '✓ '; }
+.ticket-etat.revoir { color: var(--rouge); }
+.ticket-etat.revoir::before { content: '◄ '; }
+.ticket-etat.encours { color: var(--encre-pale); }
+
+/* ---------------------------------------------------------------- le ruban */
+.ruban {
+  --dent: 9px;
+  position: relative; background: var(--papier); color: var(--encre);
+  padding: 1.1rem 1.1rem 1.6rem; font-family: var(--f-chiffres); font-size: 0.95rem; line-height: 1.45;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 0.32);
+  /* bord inférieur déchiré en dents de scie */
+  -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--dent)) no-repeat,
+    conic-gradient(from 135deg at 50% 0, #000 90deg, #0000 0) bottom / calc(var(--dent) * 2) var(--dent) repeat-x;
+          mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--dent)) no-repeat,
+    conic-gradient(from 135deg at 50% 0, #000 90deg, #0000 0) bottom / calc(var(--dent) * 2) var(--dent) repeat-x;
+}
+.ruban-tete { border-block-end: 1px dashed var(--encre-pale); padding-block-end: 0.6rem; margin-block-end: 0.5rem; }
+.ruban-tete p { margin: 0; }
+.ruban-fichier { font-size: 0.75rem; color: var(--encre-pale); overflow-wrap: anywhere; }
+.ruban-type { font-family: var(--f-texte); font-weight: 700; font-size: 0.9rem; }
+.ruban-lignes { list-style: none; margin: 0; padding: 0; }
+.ligne {
+  display: grid; grid-template-columns: 1.4ch minmax(0, 1fr) 7.5rem 1.4ch; column-gap: 0.6rem; align-items: baseline;
+  padding: 0.12rem 0.3rem; margin-inline: -0.3rem; border-radius: 2px;
+  animation: avance 140ms var(--ease) both;
+}
+@media (max-width: 479px) { .ruban { padding-inline: 0.8rem; font-size: 0.9rem; } .ligne { grid-template-columns: 1.2ch minmax(0, 1fr) 5.6rem 1.2ch; column-gap: 0.45rem; } .libelle { font-size: 0.72rem; } }
+@keyframes avance { from { clip-path: inset(100% 0 0 0); transform: translateY(6px); } to { clip-path: inset(0 0 0 0); transform: none; } }
+.ligne.filet { margin-block-start: 0.45rem; padding-block-start: 0.45rem; border-block-start: 1px dashed var(--encre-pale); border-radius: 0; }
+.sym { font-weight: 700; }
+.montant { text-align: end; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.libelle { font-size: 0.78rem; letter-spacing: 0.04em; color: var(--encre-pale); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.marque-pt { font-weight: 700; text-align: center; }
+.ligne.ecart { color: var(--rouge); }
+.ligne.ecart .montant { text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.ligne.ecart .libelle { color: var(--rouge); font-weight: 700; }
+.ligne.ecart .sym:empty::before { content: ''; }
+.note { grid-column: 2 / -1; font-family: var(--f-texte); font-size: 0.82rem; line-height: 1.4; color: var(--rouge); padding-block: 0.15rem 0.35rem; }
+.ligne.source { cursor: pointer; }
+.ligne.source:hover, .ligne.source:focus-visible { background: var(--surligneur); outline: none; }
+.ruban-pied { margin-block-start: 0.9rem; padding-block-start: 0.6rem; border-block-start: 2px solid var(--encre); }
+.verdict { margin: 0; font-weight: 700; letter-spacing: 0.04em; transition: opacity 200ms var(--ease); }
+.verdict.attend { opacity: 0; }
+.verdict-revoir { color: var(--rouge); }
+.ruban-vierge { color: var(--encre-pale); font-family: var(--f-texte); text-align: center; opacity: 0.85; }
+.ruban-vierge p { margin: 0.4rem 0; }
+
+/* ---------------------------------------------------------------- le document */
+.feuille { position: relative; background: var(--papier); box-shadow: 0 10px 24px rgb(0 0 0 / 0.32); min-height: 12rem; overflow: hidden; }
+.feuille canvas { display: block; max-width: 100%; }
+.cadre-preuve {
+  position: absolute; border: 2px solid var(--encre); background: var(--surligneur); border-radius: 2px; pointer-events: none;
+}
+.cadre-preuve.flash { animation: flash 500ms var(--ease); }
+@keyframes flash { from { box-shadow: 0 0 0 10px rgb(255 214 10 / 0.5); } to { box-shadow: 0 0 0 0 rgb(255 214 10 / 0); } }
+.pages { display: flex; gap: 0.4rem; margin-block-start: 0.6rem; }
+.num-page { min-height: 40px; padding-inline: 0.8rem; border: 1px solid var(--sur-vert-doux); border-radius: var(--r); background: transparent; cursor: pointer; font-weight: 600; }
+.num-page.actif { background: var(--papier); color: var(--encre); border-color: var(--papier); }
+
+/* ---------------------------------------------------------------- dépôt plein écran */
+.depot-plein { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; background: rgb(20 42 33 / 0.88); border: 3px dashed var(--sur-vert-doux); }
+.depot-plein p { font-size: 1.4rem; font-weight: 800; color: var(--papier); }
+
+/* ---------------------------------------------------------------- pied */
+.pied { border-block-start: 1px solid var(--sous-main-clair); background: var(--sous-main-fonce); padding-block: 1.2rem 4.5rem; font-size: 0.85rem; color: var(--sur-vert-doux); }
+.pied p { margin: 0; max-width: 90ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ligne, .cadre-preuve.flash { animation: none; }
+  .ticket { transition: none; }
+}
