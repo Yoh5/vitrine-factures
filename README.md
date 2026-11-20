@@ -1,5 +1,7 @@
 # Pointage — vos factures en Excel, recomptées une à une
 
+**En ligne : https://pointage-demo.netlify.app** — les 9 exemples se chargent à l'arrivée.
+
 Démonstration du portfolio freelance (n°4 : lecture de documents). **Outil fictif** : les 9 factures
 d'exemple sont inventées.
 
