@@ -1,0 +1,161 @@
+{
+ "01-facture-simple.pdf": {
+  "type": "facture",
+  "numero": "FA-2026-0412",
+  "date": "2026-10-14",
+  "fournisseur": "Atlas Fournitures SARL",
+  "ice_fournisseur": "001523874000062",
+  "client": "Dar Hdiya (boutique de démonstration)",
+  "ice_client": "003112244000055",
+  "ht": "5750.00",
+  "tva": {
+   "20": "1150.00"
+  },
+  "ttc": "6900.00",
+  "devise": "MAD",
+  "lettres": true,
+  "alertes": []
+ },
+ "02-deux-taux-de-tva.pdf": {
+  "type": "facture",
+  "numero": "2026/118",
+  "date": "2026-09-03",
+  "fournisseur": "Oasis Traiteur",
+  "ice_fournisseur": "002345678000047",
+  "client": "Dar Hdiya (boutique de démonstration)",
+  "ice_client": "003112244000055",
+  "ht": "6500.00",
+  "tva": {
+   "10": "480.00",
+   "20": "340.00"
+  },
+  "ttc": "7320.00",
+  "devise": "MAD",
+  "lettres": false,
+  "alertes": []
+ },
+ "03-piege-ttc-faux.pdf": {
+  "type": "facture",
+  "numero": "RCS-0937",
+  "date": "2026-08-21",
+  "fournisseur": "Rif Clim Services",
+  "ice_fournisseur": "001987654000033",
+  "client": "Dar Hdiya (boutique de démonstration)",
+  "ice_client": "003112244000055",
+  "ht": "2600.00",
+  "tva": {
+   "20": "520.00"
+  },
+  "ttc": "3220.00",
+  "devise": "MAD",
+  "lettres": false,
+  "alertes": [
+   "ttc_incoherent"
+  ]
+ },
+ "04-devis-points-milliers.pdf": {
+  "type": "devis",
+  "numero": "DV-2026-77",
+  "date": "2026-11-02",
+  "fournisseur": "Imprimerie Souss Print",
+  "ice_fournisseur": "002167339000019",
+  "client": "Dar Hdiya (boutique de démonstration)",
+  "ice_client": "003112244000055",
+  "ht": "12650.00",
+  "tva": {
+   "20": "2530.00"
+  },
+  "ttc": "15180.00",
+  "devise": "MAD",
+  "lettres": true,
+  "alertes": []
+ },
+ "05-piege-lettres-differentes.pdf": {
+  "type": "facture",
+  "numero": "FA-2026-0455",
+  "date": "2026-11-05",
+  "fournisseur": "Atlas Fournitures SARL",
+  "ice_fournisseur": "001523874000062",
+  "client": "Dar Hdiya (boutique de démonstration)",
+  "ice_client": "003112244000055",
+  "ht": "1170.00",
+  "tva": {
+   "20": "234.00"
+  },
+  "ttc": "1404.00",
+  "devise": "MAD",
+  "lettres": false,
+  "alertes": [
+   "lettres_differentes"
+  ]
+ },
+ "06-piege-sans-tva-ice-incomplet.pdf": {
+  "type": "facture",
+  "numero": "F 2026-31",
+  "date": "2026-07-12",
+  "fournisseur": "Menuiserie Al Khachab",
+  "ice_fournisseur": null,
+  "client": "Dar Hdiya (boutique de démonstration)",
+  "ice_client": null,
+  "ht": null,
+  "tva": null,
+  "ttc": "2250.00",
+  "devise": "MAD",
+  "lettres": false,
+  "alertes": [
+   "tva_introuvable",
+   "ice_invalide"
+  ]
+ },
+ "07-deux-pages-virgule-milliers.pdf": {
+  "type": "facture",
+  "numero": "INV-26-5521",
+  "date": "2026-10-30",
+  "fournisseur": "Imprimerie Souss Print",
+  "ice_fournisseur": "002167339000019",
+  "client": "Dar Hdiya (boutique de démonstration)",
+  "ice_client": "003112244000055",
+  "ht": "17250.00",
+  "tva": {
+   "20": "3450.00"
+  },
+  "ttc": "20700.00",
+  "devise": "MAD",
+  "lettres": false,
+  "alertes": []
+ },
+ "08-piege-document-scanne.pdf": {
+  "type": null,
+  "numero": null,
+  "date": null,
+  "fournisseur": null,
+  "ice_fournisseur": null,
+  "client": null,
+  "ice_client": null,
+  "ht": null,
+  "tva": null,
+  "ttc": null,
+  "devise": null,
+  "lettres": false,
+  "alertes": [
+   "document_scanne"
+  ]
+ },
+ "09-remise-tva-14.pdf": {
+  "type": "facture",
+  "numero": "TR-1188",
+  "date": "2026-06-18",
+  "fournisseur": "Trans Fès Logistique",
+  "ice_fournisseur": "002900114000082",
+  "client": "Dar Hdiya (boutique de démonstration)",
+  "ice_client": "003112244000055",
+  "ht": "3610.00",
+  "tva": {
+   "14": "505.40"
+  },
+  "ttc": "4115.40",
+  "devise": "MAD",
+  "lettres": true,
+  "alertes": []
+ }
+}

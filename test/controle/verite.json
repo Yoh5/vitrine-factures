@@ -1,0 +1,82 @@
+{
+ "c1-base-ht-total-a-payer.pdf": {
+  "type": "facture",
+  "numero": "0098/26",
+  "date": "2026-10-14",
+  "fournisseur": "Sahara Café Distribution",
+  "ice_fournisseur": "002456789000011",
+  "client": "Café Bab Doukkala",
+  "ice_client": "001777222000081",
+  "ht": "4200.00",
+  "tva": {
+   "20": "840.00"
+  },
+  "ttc": "5040.00",
+  "alertes": []
+ },
+ "c2-sans-centimes-tva-7.pdf": {
+  "type": "facture",
+  "numero": "EAU-5512",
+  "date": "2026-09-30",
+  "fournisseur": "Source Ifrane Eaux",
+  "ice_fournisseur": "001122334000055",
+  "client": "Café Bab Doukkala",
+  "ice_client": "001777222000081",
+  "ht": "3000.00",
+  "tva": {
+   "7": "210.00"
+  },
+  "ttc": "3210.00",
+  "alertes": []
+ },
+ "c3-piege-tva-mal-calculee.pdf": {
+  "type": "facture",
+  "numero": "F-778",
+  "date": "2026-11-10",
+  "fournisseur": "Bureau Plus Rabat",
+  "ice_fournisseur": "003456123000094",
+  "client": "Café Bab Doukkala",
+  "ice_client": "001777222000081",
+  "ht": "1000.00",
+  "tva": {
+   "20": "220.00"
+  },
+  "ttc": "1220.00",
+  "alertes": [
+   "tva_incoherente"
+  ]
+ },
+ "c4-avoir-negatif.pdf": {
+  "type": "avoir",
+  "numero": "AV-0012",
+  "date": "2026-11-12",
+  "fournisseur": "Atlas Fournitures SARL",
+  "ice_fournisseur": "001523874000062",
+  "client": "Café Bab Doukkala",
+  "ice_client": "001777222000081",
+  "ht": "-500.00",
+  "tva": {
+   "20": "-100.00"
+  },
+  "ttc": "-600.00",
+  "alertes": []
+ },
+ "c5-piege-taux-et-ligne.pdf": {
+  "type": "facture",
+  "numero": "2026-0441",
+  "date": "2026-10-02",
+  "fournisseur": "Import Express Tanger",
+  "ice_fournisseur": "002998877000066",
+  "client": "Café Bab Doukkala",
+  "ice_client": "001777222000081",
+  "ht": "800.00",
+  "tva": {
+   "18": "144.00"
+  },
+  "ttc": "944.00",
+  "alertes": [
+   "taux_inhabituel",
+   "ligne_incoherente"
+  ]
+ }
+}
