@@ -100,6 +100,10 @@ function rendreListe() {
 }
 
 // ---------------------------------------------------------------- le ruban
+// Le geste signature s'apprend dans l'en-tête du ruban, là où le regard arrive.
+const AIDE = matchMedia('(hover: none)').matches
+  ? 'Touchez une ligne : l’endroit où elle a été lue s’encadre sur la facture.'
+  : 'Survolez une ligne : l’endroit où elle a été lue s’encadre sur la facture.';
 let impression = 0;
 function rendreRuban(d: Doc) {
   const art = $('ruban');
@@ -112,6 +116,7 @@ function rendreRuban(d: Doc) {
     : l ? ruban(l) : [];
   const tete = el('header', 'ruban-tete');
   tete.append(el('p', 'ruban-fichier', d.fichier), el('p', 'ruban-type', l?.type ? `${l.type.toUpperCase()} · ${l.fournisseur ?? ''}` : ''));
+  if (lignes.some((x) => x.source)) tete.append(el('p', 'ruban-aide', AIDE));
   const corps = el('ol', 'ruban-lignes');
   const pied = el('footer', 'ruban-pied');
   const n = l?.alertes.length ?? 1;
@@ -278,7 +283,6 @@ addEventListener('resize', () => {
   clearTimeout(attente);
   attente = window.setTimeout(() => { const d = docs.find((x) => x.id === choisi); if (d && !d.erreur) { $('preuve').hidden = true; marquer(null); rendre(d, pageVue); } }, 200);
 });
-if (matchMedia('(hover: none)').matches) $('aide-doc').textContent = 'Touchez une ligne du ruban : l’endroit où elle a été lue s’encadre sur la facture.';
 rendreListe();
 
 // Lien direct pour un devis : ?exemples charge les 9 exemples ; &doc=3 ouvre le 3e ; &preuve=5 encadre la 5e ligne du ruban.

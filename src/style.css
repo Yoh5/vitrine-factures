@@ -55,7 +55,7 @@ a { color: inherit; text-underline-offset: 0.2em; }
 .btn-trait { background: transparent; color: var(--sur-vert); border-color: var(--sur-vert-doux); }
 .btn-trait:hover { background: var(--sous-main-clair); }
 /* l'action de sortie : encre pleine (le rouge est réservé aux écarts du ruban) */
-.btn-encre { background: var(--encre); color: var(--papier); border-color: var(--papier); width: 100%; margin-block-start: 1rem; box-shadow: 0 4px 12px rgb(0 0 0 / 0.3); }
+.btn-encre { background: var(--encre); color: var(--papier); border-color: var(--papier); width: 100%; margin-block-end: 0.9rem; box-shadow: 0 4px 12px rgb(0 0 0 / 0.3); }
 .btn-encre:hover { background: #000; }
 
 /* ---------------------------------------------------------------- bandeau */
@@ -139,6 +139,7 @@ h2 { margin: 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.
 .ruban-tete p { margin: 0; }
 .ruban-fichier { font-size: 0.75rem; color: var(--encre-pale); overflow-wrap: anywhere; }
 .ruban-type { font-family: var(--f-texte); font-weight: 700; font-size: 0.9rem; }
+.ruban-aide { font-family: var(--f-texte); font-size: 0.8rem; color: var(--encre-pale); margin-block-start: 0.3rem !important; }
 .ruban-lignes { list-style: none; margin: 0; padding: 0; }
 .ligne {
   display: grid; grid-template-columns: 1.4ch minmax(0, 1fr) 7.5rem 1.4ch; column-gap: 0.6rem; align-items: baseline;

@@ -1,0 +1,171 @@
+{
+ "schemaVersion": 2,
+ "generatedAt": "2026-11-20T10:29:51.647072+00:00",
+ "title": "Design System: Pointage",
+ "extensions": {
+  "colorMeta": {
+   "sous-main": {
+    "role": "primary",
+    "displayName": "Sous-main vert bouteille",
+    "tonalRamp": [
+     "#142a21",
+     "#1d3a2e",
+     "#2a5040"
+    ]
+   },
+   "papier": {
+    "role": "neutral",
+    "displayName": "Papier thermique",
+    "tonalRamp": [
+     "#e9edea",
+     "#fbfcfa",
+     "#ffffff"
+    ]
+   },
+   "encre": {
+    "role": "neutral",
+    "displayName": "Encre de ruban",
+    "tonalRamp": [
+     "#000000",
+     "#161816",
+     "#535b56"
+    ]
+   },
+   "rouge-ruban": {
+    "role": "tertiary",
+    "displayName": "Rouge de ruban (écarts seulement)"
+   },
+   "surligneur": {
+    "role": "tertiary",
+    "displayName": "Surligneur (la preuve)"
+   }
+  },
+  "typographyMeta": {
+   "ruban": {
+    "displayName": "Chiffres du ruban",
+    "purpose": "Tous les montants, une seule taille."
+   },
+   "titre": {
+    "displayName": "Titre",
+    "purpose": "La promesse du bandeau, une fois."
+   }
+  },
+  "shadows": [
+   {
+    "name": "papier-pose",
+    "value": "0 10px 24px rgb(0 0 0 / 0.32)",
+    "purpose": "Ruban et feuille posés sur le sous-main."
+   },
+   {
+    "name": "ticket",
+    "value": "0 1px 0 #e9edea, 0 4px 10px rgb(0 0 0 / 0.22)",
+    "purpose": "Tickets de la pile."
+   },
+   {
+    "name": "ticket-choisi",
+    "value": "0 10px 22px rgb(0 0 0 / 0.4)",
+    "purpose": "Ticket sorti de la pile."
+   }
+  ],
+  "motion": [
+   {
+    "name": "ease",
+    "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "purpose": "Toutes les transitions."
+   },
+   {
+    "name": "impression",
+    "value": "70ms par ligne, avance 140ms (clip-path)",
+    "purpose": "Le ruban s'imprime."
+   },
+   {
+    "name": "flash-preuve",
+    "value": "500ms",
+    "purpose": "Le cadre de preuve se pose."
+   }
+  ],
+  "breakpoints": [
+   {
+    "name": "etroit",
+    "value": "479px"
+   },
+   {
+    "name": "bureau",
+    "value": "960px"
+   }
+  ]
+ },
+ "components": [
+  {
+   "name": "Bouton papier",
+   "kind": "button",
+   "refersTo": "bouton-papier",
+   "description": "Action d'entrée (déposer des PDF).",
+   "html": "<button class=\"ds-papier\">Déposer vos PDF</button>",
+   "css": ".ds-papier{background:#fbfcfa;color:#161816;border:0;border-radius:4px;min-height:48px;padding:0 1.1rem;font:700 1rem 'Public Sans',sans-serif;box-shadow:0 4px 12px rgb(0 0 0/.28)}.ds-papier:hover{background:#fff}"
+  },
+  {
+   "name": "Bouton encre",
+   "kind": "button",
+   "refersTo": "bouton-encre",
+   "description": "Action de sortie (télécharger l'Excel).",
+   "html": "<button class=\"ds-encre\">Télécharger l’Excel</button>",
+   "css": ".ds-encre{background:#161816;color:#fbfcfa;border:2px solid #fbfcfa;border-radius:4px;min-height:48px;padding:0 1.1rem;font:700 1rem 'Public Sans',sans-serif}"
+  },
+  {
+   "name": "Ligne de ruban",
+   "kind": "custom",
+   "refersTo": "ruban",
+   "description": "Une ligne de calcul ; .ecart pour un écart.",
+   "html": "<div class=\"ds-ruban\"><div class=\"l\"><span>+</span><span>520,00</span><span>TVA 20 %</span><span>✓</span></div><div class=\"l e\"><span></span><span><s>3 220,00</s></span><span>TTC LU</span><span>◄</span></div></div>",
+   "css": ".ds-ruban{background:#fbfcfa;color:#161816;padding:1rem;font:400 .95rem 'Azeret Mono',monospace;width:22rem}.ds-ruban .l{display:grid;grid-template-columns:1.4ch 1fr 7.5rem 1.4ch;gap:.6rem}.ds-ruban .l span:nth-child(2){text-align:right}.ds-ruban .e{color:#b8111e;font-weight:700}"
+  }
+ ],
+ "narrative": {
+  "northStar": "Le ruban agrafé à la facture",
+  "overview": "Le comptable recompte et agrafe le ticket de sa calculatrice à la facture : Pointage fait ce geste à l'écran. Chaque document imprime son ruban ligne à ligne ; un écart s'imprime en rouge, barré, marqué ◄ ; toucher une ligne encadre sa source dans le PDF.",
+  "keyCharacteristics": [
+   "Sous-main vert engagé",
+   "Papier thermique blanc froid",
+   "Une seule taille de chiffres",
+   "Rouge = écart seulement",
+   "Ruban chevauchant la facture"
+  ],
+  "rules": [
+   {
+    "name": "The Ribbon-Red Rule",
+    "body": "Le rouge ne marque que les écarts ; l'action de sortie est en encre.",
+    "section": "colors"
+   },
+   {
+    "name": "The No-Colour-Alone Rule",
+    "body": "Un écart est aussi barré et marqué ◄.",
+    "section": "colors"
+   },
+   {
+    "name": "The One-Figure-Size Rule",
+    "body": "Aucun montant du ruban plus gros qu'un autre.",
+    "section": "typography"
+   },
+   {
+    "name": "The Drawn-Marks Rule",
+    "body": "✓ ◄ ◇ dessinés en SVG, jamais en texte.",
+    "section": "typography"
+   },
+   {
+    "name": "The Soft-Lift Rule",
+    "body": "Aucune ombre dure sans flou.",
+    "section": "elevation"
+   }
+  ],
+  "dos": [
+   "Do relier chaque valeur à sa source dans le PDF.",
+   "Do héberger polices et code sur le site."
+  ],
+  "donts": [
+   "Don't utiliser le rouge pour une action.",
+   "Don't tronquer un numéro de facture.",
+   "Don't passer en papier crème."
+  ]
+ }
+}
