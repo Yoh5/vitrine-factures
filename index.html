@@ -7,14 +7,14 @@
     <meta name="description" content="Déposez des factures et devis PDF : chaque montant est recompté (HT + TVA = TTC, taux, ICE, montant en lettres) et ce qui ne tombe pas juste est signalé. Rien ne quitte votre ordinateur. Démonstration." />
     <meta name="theme-color" content="#1d3a2e" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;700&family=Public+Sans:wght@400;600;700;800&display=swap" />
+    <!-- polices hébergées ici (OFL) : aucune requête vers un tiers, comme les PDF -->
+    <link rel="preload" href="/polices/azeret-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/polices/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <header class="bandeau">
       <div class="cadre bandeau-cadre">
-        <p class="marque"><span class="marque-nom">Pointage</span><span class="marque-sous">démonstration</span></p>
+        <p class="marque"><span class="marque-nom"><svg class="coche" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>Pointage</span><span class="marque-sous">démonstration</span></p>
         <div class="promesse">
           <h1>Vos factures en Excel, recomptées une à une.</h1>
           <p>Chaque montant est vérifié : HT&nbsp;+&nbsp;TVA&nbsp;=&nbsp;TTC, taux marocains, ICE, montant en lettres.
@@ -40,7 +40,7 @@
           </div>
           <ol class="tickets" id="tickets"></ol>
           <p class="vide" id="vide">Pile vide. Déposez vos PDF (ils restent sur cet ordinateur) ou rechargez les 9 exemples fictifs, dont 5 pièges.</p>
-          <button class="btn btn-rouge" type="button" id="exporter" hidden>
+          <button class="btn btn-encre" type="button" id="exporter" hidden>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="m7 10 5 5 5-5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
             Télécharger l’Excel</button>
         </section>
@@ -53,15 +53,13 @@
         </section>
 
         <section class="document" aria-labelledby="titre-doc">
-          <div class="document-tete">
-            <h2 id="titre-doc">Le document</h2>
-            <p class="aide" id="aide-doc">Survolez une ligne du ruban : l’endroit où elle a été lue s’encadre ici.</p>
-          </div>
+          <h2 id="titre-doc" class="titre-doc">Le document</h2>
           <div class="feuille" id="feuille" hidden>
             <canvas id="toile" aria-label="Aperçu de la page du PDF"></canvas>
             <div class="cadre-preuve" id="preuve" hidden></div>
           </div>
           <div class="pages" id="pages" hidden></div>
+          <p class="aide" id="aide-doc">Survolez une ligne du ruban : l’endroit où elle a été lue s’encadre sur la facture.</p>
         </section>
       </div>
       <div class="depot-plein" id="depot" hidden><p>Lâchez vos PDF : ils restent sur cet ordinateur.</p></div>

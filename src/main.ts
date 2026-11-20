@@ -18,6 +18,22 @@ const EXEMPLES = [
   '08-piege-document-scanne.pdf', '09-remise-tva-14.pdf',
 ];
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
+
+// ✓ ◄ ◇ n'existent pas dans les polices : dessinés ici, d'un seul trait, pour ne pas changer de police en milieu de ligne.
+const SIGNES: Record<string, string> = {
+  '✓': '<path d="M2.5 8.5l3.5 3.5 7.5-8"/>',
+  '◄': '<path d="M12.5 3v10L3.5 8z" fill="currentColor"/>',
+  '◇': '<path d="M8 2.5 13.5 8 8 13.5 2.5 8z"/>',
+};
+function signe(c: string, cls: string): HTMLSpanElement {
+  const sp = document.createElement('span');
+  sp.className = cls;
+  if (SIGNES[c]) {
+    sp.innerHTML = `<svg viewBox="0 0 16 16" aria-hidden="true">${SIGNES[c]}</svg>`;
+    sp.setAttribute('aria-label', c === '✓' ? 'pointé' : c === '◄' ? 'écart' : 'sous-total');
+  } else sp.textContent = c;
+  return sp;
+}
 const reduit = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string, texte?: string): HTMLElementTagNameMap[K] {
@@ -99,24 +115,25 @@ function rendreRuban(d: Doc) {
   const corps = el('ol', 'ruban-lignes');
   const pied = el('footer', 'ruban-pied');
   const n = l?.alertes.length ?? 1;
-  const verdict = el('p', 'verdict ' + (n ? 'verdict-revoir' : 'verdict-pointe'), n ? `À REVOIR · ${n} ÉCART${n > 1 ? 'S' : ''}` : 'POINTÉ ✓ TOUT TOMBE JUSTE');
+  const verdict = el('p', 'verdict ' + (n ? 'verdict-revoir' : 'verdict-pointe'));
+  verdict.append(signe(n ? '◄' : '✓', 'verdict-signe'), n ? `À REVOIR · ${n} ÉCART${n > 1 ? 'S' : ''}` : 'POINTÉ · TOUT TOMBE JUSTE');
   pied.append(verdict);
   art.replaceChildren(tete, corps, pied);
 
   const items = lignes.map((x) => {
     const li = el('li', 'ligne' + (x.etat === 'ecart' ? ' ecart' : '') + (x.separateur ? ' filet' : ''));
     li.append(
-      el('span', 'sym', x.sym),
+      signe(x.sym, 'sym'),
       el('span', 'montant', x.montant),
       el('span', 'libelle', x.libelle),
-      el('span', 'marque-pt', x.etat === 'ok' ? '✓' : x.etat === 'ecart' ? '◄' : ''),
+      signe(x.etat === 'ok' ? '✓' : x.etat === 'ecart' ? '◄' : '', 'marque-pt'),
     );
     if (x.note) li.append(el('span', 'note', x.note));
     if (x.source) {
       li.tabIndex = 0;
       li.classList.add('source');
       li.setAttribute('aria-label', `${x.libelle} ${x.montant} : montrer où c’est écrit dans le document`);
-      const montrer = () => montrerPreuve(x.source!);
+      const montrer = () => { marquer(li); montrerPreuve(x.source!); };
       li.addEventListener('mouseenter', montrer);
       li.addEventListener('focus', montrer);
       li.addEventListener('click', montrer);
@@ -166,11 +183,16 @@ async function rendrePage(d: Doc, numero: number) {
   pages.replaceChildren(...Array.from({ length: doc.numPages }, (_, i) => {
     const b = el('button', 'num-page' + (i + 1 === numero ? ' actif' : ''), `Page ${i + 1}`);
     b.type = 'button';
-    b.addEventListener('click', () => { $('preuve').hidden = true; rendre(d, i + 1); });
+    b.addEventListener('click', () => { $('preuve').hidden = true; marquer(null); rendre(d, i + 1); });
     return b;
   }));
 }
 function rendre(d: Doc, numero: number) { rendu = rendrePage(d, numero); return rendu; }
+
+function marquer(li: HTMLElement | null) {
+  document.querySelectorAll('.ligne.montree').forEach((x) => x.classList.remove('montree'));
+  li?.classList.add('montree');
+}
 
 async function montrerPreuve(s: Source) {
   const d = docs.find((x) => x.id === choisi);
@@ -193,7 +215,7 @@ function choisir(id: number) {
   const d = docs.find((x) => x.id === id)!;
   rendreListe();
   document.querySelector('.ticket.actif')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-  $('preuve').hidden = true;
+  $('preuve').hidden = true; marquer(null);
   rendreRuban(d);
   $('feuille').hidden = !!d.erreur;
   if (!d.erreur) rendre(d, 1);
@@ -222,7 +244,7 @@ $('exporter').addEventListener('click', async () => {
 $('vider').addEventListener('click', () => {
   docs.length = 0; choisi = null; ++impression; ++rendus;
   $('ruban').hidden = true; $('ruban-attente').hidden = false;
-  $('feuille').hidden = true; $('pages').hidden = true; $('preuve').hidden = true;
+  $('feuille').hidden = true; $('pages').hidden = true; $('preuve').hidden = true; marquer(null);
   rendreListe();
   $('fichiers').focus();
 });
@@ -254,8 +276,9 @@ addEventListener('drop', (e) => {
 let attente: number | undefined;
 addEventListener('resize', () => {
   clearTimeout(attente);
-  attente = window.setTimeout(() => { const d = docs.find((x) => x.id === choisi); if (d && !d.erreur) { $('preuve').hidden = true; rendre(d, pageVue); } }, 200);
+  attente = window.setTimeout(() => { const d = docs.find((x) => x.id === choisi); if (d && !d.erreur) { $('preuve').hidden = true; marquer(null); rendre(d, pageVue); } }, 200);
 });
+if (matchMedia('(hover: none)').matches) $('aide-doc').textContent = 'Touchez une ligne du ruban : l’endroit où elle a été lue s’encadre sur la facture.';
 rendreListe();
 
 // Lien direct pour un devis : ?exemples charge les 9 exemples ; &doc=3 ouvre le 3e ; &preuve=5 encadre la 5e ligne du ruban.
